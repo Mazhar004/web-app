@@ -1,0 +1,16 @@
+<div class="container justify-content-center">
+	<div class="col-sm-12">
+		<div class="card">
+			<!--style="background-color: ;"-->
+			<div class="card-header">
+				<form class="form-group" method="POST">{% csrf_token %}
+					<div class="input-group no-border mt-2">
+						<input type="text" name='search' class="form-control" autocomplete="off" placeholder="Enter Movie/Tv Series Name...">
+						<button type="submit" class="btn btn-success btn-round btn-just-icon"> <i class="material-icons">search</i>
+						</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>

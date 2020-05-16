@@ -1,0 +1,4 @@
+wheel
+requests
+python-decouple
+Django~=2.2.3

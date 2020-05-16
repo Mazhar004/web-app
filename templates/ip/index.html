@@ -1,0 +1,42 @@
+{% extends 'ip/base.html' %} 
+{% block content%}
+<div class="content">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="alert alert-primary text-center" role="alert">Enter<a href="#" class="alert-link"> Web or IP Address </a> to Find <a href="#" class="alert-link">
+                    Server Location! </a>To Find Your <a href="#" class="alert-link"> Own Server Location </a>
+				Just Enter<a href="#" class="alert-link"> My</a>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+{% if name != '0' %}
+<div class="content">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="card">
+				<div class="card-header card-header-success"> <a href="pdf" class="btn btn-danger btn-sm float-right">Print</a>
+					<h4 class="card-title ">{{ name.Organization}}</h4>
+					<p class="card-category">Here is the detail about it..!</p>
+				</div>
+				<div class="card-body">
+					<div class="table-responsive">
+						<table class="table" id="tableG">
+							<tbody>
+                            {% for i,j in name.items %}
+								<tr>
+									<td>{{ i }}</td>
+									<td>{{ j }}</td>
+								</tr>
+                            {% endfor %}
+                            </tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endif %}
+{% endblock %}

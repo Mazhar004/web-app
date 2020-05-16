@@ -1,0 +1,51 @@
+{% extends 'similar/base.html' %} 
+{% load static %} 
+{% block content%}
+<div class="content">
+	<div class="row justify-content-center">
+		<div class="col-md-8">
+			<div class="alert alert-danger text-center" role="alert">Enter<a href="#" class="alert-link"> Movie/TV Series Name </a> to Find <a href="#" class="alert-link">
+                    Similar Movie/TV Series! </a>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+{% if data %}
+<div class="content">
+	<div class="row">
+    {% for i,j in data.items %}
+		<div class="col-sm-4">
+			<div class="card">
+				<div class="card-header card-header-success">
+					<h4 class="card-title ">{{ i }} {{ j.Year }}
+                        <a href="{{ j.Link }}" target="_blank" class="btn btn-danger btn-sm float-right">Trailer</a>
+                    </h4>
+				</div>
+				<div class="row">
+					<div class="card-body col-sm-6 col-md-6">{% if j.Poster == "N/A" %}
+						<img class="card-img-top" src="{% static 'img/similar/image_not.jpg' %}" alt="Image Not Found" />{% else %}
+						<img class="card-img-top" src="{{ j.Poster }}" alt="Image Can not be displayed" />{% endif %}</div>
+					<div class="card-body col-sm-6 col-md-6 ">
+						<img src=" {% static 'img/similar/imdb.svg' %}" width="35px" height="35px" />
+						<button class="btn btn-success btn-sm">{{ j.imdbRating }}</button> <span class="badge badge-danger">{{ j.imdbVotes|floatformat:-1 }}K Votes</span>
+						<br>{% if j.Type == 'movie' %}
+						<img src="{% static 'img/similar/Rotten.svg' %}" width="35px" height="35px" />{% if j.Rotten_Tomatoes %}
+						<button class="btn btn-success btn-sm">{{ j.Rotten_Tomatoes }}</button>{% else %}
+						<button class="btn btn-success btn-sm">N/A</button>{% endif %}
+						<h4 class="card-title">Box Office:</h4>
+						{% if j.BoxOffice == "N/A" %}
+						<button class="btn btn-success btn-sm">N/A</button>{% else %}
+						<button class="btn btn-success btn-sm">$ {{ j.BoxOffice|floatformat:-2 }}M</button>{% endif %} {% else %}
+						<h4 class="card-title">Total Seasons:</h4>
+						<button class="btn btn-success btn-sm">{{ j.Total_Season }}</button>{% endif %}</div>
+				</div>
+				<div class="col-sm-12 p-2">{% for x in j.Genre %}
+					<button type="button" class="btn btn-danger btn-sm">{{x}}</button>{% endfor %}</div>
+			</div>
+		</div>
+        {% endfor %}
+    </div>
+</div>
+{% endif %} 
+{% endblock %}

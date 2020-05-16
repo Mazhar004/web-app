@@ -1,0 +1,36 @@
+{% extends 'home/base.html' %} 
+{% load static %} 
+{% block content%}
+<div class="content">
+	<div class="row">
+		<div class="col-sm-4">
+			<div class="card">
+				<div class="card-header card-header-success">
+					<h4 class="card-title ">IP Locate
+                        <a href="/weblocate" class="btn btn-danger btn-sm float-right">Web Locate</a>
+                    </h4>
+				</div>
+				<div class="row">
+					<div class="card-body col-sm-12 col-md-12">
+						<img class="card-img" src="{% static 'img/home/ip.jpg' %}" alt="Image Not Found" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4">
+			<div class="card">
+				<div class="card-header card-header-success">
+					<h4 class="card-title ">Similar Movie
+                        <a href="/similar" class="btn btn-danger btn-sm float-right">Similar</a>
+                    </h4>
+				</div>
+				<div class="row">
+					<div class="card-body col-sm-12 col-md-12">
+						<img class="card-img" src="{% static 'img/home/similar.jpg' %}" alt="Image Not Found" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
