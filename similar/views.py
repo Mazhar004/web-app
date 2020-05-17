@@ -20,44 +20,43 @@ class movie_recommend(TemplateView):
         self.movie_name = request.POST['search']
         if self.movie_name != '':
             try:
-                self.data = get_sorted_recommendations(
-                    self.movie_name.split(','))
+                self.data = get_sorted_recommendations(self.movie_name)
             except:
                 pass
         return render(request, 'similar/index.html', {'data': self.data})
 
 
-def similar_movie(a):
+def similar_movie(name):
     baseurl = config('baseurl1_movie')
-    d = {'q': a, 'limit': 5,
+    params = {'q': name, 'limit': 5,
          'k': config('apikey_movie'), 'verbose': 1}
-    x = json.loads(rq.get(baseurl, params=d).text)
-    return x
+    s_title = json.loads(rq.get(baseurl, params=params).text)
+    return s_title
 
 
-def extract_movie_titles(a):
-    x = []
-    for i in a['Similar']['Results']:
-        x.append([i['Name'], i['yUrl']])
-    return x
+def extract_movie_titles(name):
+    info = []
+    for i in name['Similar']['Results']:
+        info.append([i['Name'], i['yUrl']])
+    return info
 
 
-def get_related_titles(a):
-    y = []
-    for i in a:
-        x = extract_movie_titles(similar_movie(i))
-        for j in x:
-            if j not in y:
-                y.append(j)
-    return y
+def get_related_titles(name):
+    titles = []
+    for i in name:
+        title = extract_movie_titles(similar_movie(i))
+        for j in title:
+            if j not in titles:
+                titles.append(j)
+    return titles
 
 
-def get_movie_data(a):
+def get_movie_data(name_detail):
     baseurl = config('baseurl2_movie')
-    d = {'t': a[0], 'r': 'json', 'apikey': config('apikey_moviedetail2')}
-    x = json.loads(rq.get(baseurl, params=d).text)
+    params = {'t': name_detail[0], 'r': 'json', 'apikey': config('apikey_moviedetail2')}
+    x = json.loads(rq.get(baseurl, params=params).text)
     data = {'Year': x['Year'], 'Genre': x['Genre'].split(',')[:4], 'Poster': x['Poster'], 'imdbRating': x['imdbRating'], 'imdbVotes': float(
-        x['imdbVotes'].replace(',', ''))/10000, 'Link': a[1], 'Type': x['Type']}
+        x['imdbVotes'].replace(',', ''))/10000, 'Link': name_detail[1], 'Type': x['Type']}
     for k in x['Ratings']:
         if k['Source'] == 'Rotten Tomatoes':
             data['Rotten_Tomatoes'] = k['Value']
@@ -74,17 +73,17 @@ def get_movie_data(a):
     return data
 
 
-def get_sorted_recommendations(a):
-    x = get_related_titles(a)
+def get_sorted_recommendations(name):
+    title = get_related_titles([name])
     result = {}
-    for i in x:
+    for i in title:
         try:
             result[i[0]] = get_movie_data(i)
         except:
             pass
-    b = sorted(result, key=lambda x: (
+    rating_index = sorted(result, key=lambda x: (
         float(result[x]['imdbRating']), float(result[x]['imdbVotes'])), reverse=True)
     res = {}
-    for i in b:
+    for i in rating_index:
         res[i] = result[i]
     return res
